@@ -1,0 +1,25 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Main page{% endblock %}    
+
+{% block content %}
+    
+        
+        <div class="features">
+            <h1>Profile Analyzer</h1>
+            <p class="features_text">
+                Welcome to Profile Analyzer!
+            </p>
+            {% if user.is_authenticated %}
+            <p class="features_text">
+                Hello, {{ user.username }}!<br>
+                To start your search go to Search tab to create a new search or explore you search history.
+            </p>
+            {% else %}
+            <p class="features_text">
+                To work with searches you should <a href="/users/login" class="internal_link">Log In</a> or <a href="/users/register" class="internal_link">Register</a>!
+            </p>
+            {% endif %}
+        </div>  
+    
+{% endblock %}    

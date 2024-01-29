@@ -1,0 +1,24 @@
+{% extends 'main/layout.html' %}
+{% block title %}Search profile{% endblock %}    
+
+{% block content %}
+    <div class="features">
+        <h1>Search profile</h1>
+        <a href="{% url 'create_search' %}"><button class="new_search_btn">Create search</button></a>
+        <h2 class="sub_header">Searches history</h2>
+        <div class="searches_history">
+            
+            {% if searches %}
+                {% for el in searches %}
+                <a href="{% url 'search_detail' el.id %}" class="internal_link">
+                    <div class="search_element">
+                        <h3>{{ el }} ({{ el.date }})</h3>
+                    </div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <p class="custom_alert">You have no searches. Try to create <a href="{% url 'create_search' %}" class="internal_link">new search</a>.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}    

@@ -1,0 +1,21 @@
+{% extends 'main/layout.html' %}
+{% block content %} 
+{% load crispy_forms_tags %}  
+
+<!--Register--> 
+<div class="features">
+	<div class="auth_form">
+		<h1>Register</h1>
+		<form method="post">
+			{% csrf_token %}
+			{{ form|crispy }}
+			<span class="custom_error">{{ error }}</span>
+			
+			<button class="new_search_btn" type="submit">Register</button>
+			<a href="{% url 'home' %}" class="cancel_btn">Cancel</a>
+		</form>
+		<p class="text-center">If you already have an account, <a href="login" class="internal_link">login</a> instead.</p>
+	</div>
+</div>
+
+{% endblock %}

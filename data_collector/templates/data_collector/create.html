@@ -1,0 +1,22 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}New search{% endblock %}    
+
+{% block content %}
+    <div class="features">
+        <h1>New search</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.name }}<br>
+            {{ form.link }}<br>
+            <div>
+                <span class="custom_error">{{ error }}</span>
+                <div>
+                    <button class="new_search_btn" type="submit">Search</button>
+                    <a href="{% url 'search_home' %}" class="cancel_btn">Cancel</a>
+                </div>
+            </div>
+        </form>
+        
+    </div>
+{% endblock %}    
