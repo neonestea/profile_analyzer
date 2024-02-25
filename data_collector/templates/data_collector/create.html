@@ -7,8 +7,8 @@
         <h1>New search</h1>
         <form method="post">
             {% csrf_token %}
-            {{ form.name }}<br>
-            {{ form.link }}<br>
+            Name: {{ form.name }}<br>
+            Link(s) to users{{ form.link }}<br>
             <div>
                 <span class="custom_error">{{ error }}</span>
                 <div>

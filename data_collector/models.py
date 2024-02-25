@@ -3,15 +3,15 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
+
 class Search(models.Model):
     fields = ("id","user_id")
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    #todo add registration
-    #user_id = models.CharField('UserId', max_length=50, default = "dfasd")
     created_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField('Name', max_length=50, default = "NewSearch")
     link = models.TextField('Link')
     date = models.DateTimeField('Date of search', auto_now_add=True)
+    ready = models.IntegerField("Ready", default = 0)
 
     def __str__(self):
         return self.name
@@ -29,3 +29,60 @@ class Search(models.Model):
     class Meta:
         verbose_name = 'Search'
         verbose_name_plural = 'Searches'
+
+class ProfileInfo(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    connected_search = models.ForeignKey(Search, null=True, blank=True, on_delete=models.SET_NULL)
+    link = models.CharField('Link', max_length=50)
+    first_name = models.CharField('First Name', max_length=50)
+    last_name = models.CharField('Last Name', max_length=50)
+    bdate = models.DateTimeField('Birth Date')
+    interests = models.TextField('Interests')
+    books = models.TextField('Books')
+    tv = models.TextField('TV')
+    games = models.TextField('Games')
+    movies = models.TextField('Movies')
+    activities = models.TextField('Activities')
+    music = models.TextField('Music')
+    status = models.TextField('Status')
+    military = models.IntegerField('Military')
+    #university = models.TextField('University')
+    university_name = models.TextField('University Name')
+    faculty = models.TextField('Faculty')
+    #graduation = models.TextField('Graduation')
+    home_town = models.CharField('Home Town', max_length=50)
+    relation = models.TextField('Relation')
+    #schools = models.TextField('Schools')
+    sex = models.IntegerField('Sex')
+    about = models.TextField('About')
+    #career = models.TextField('Career')
+    country = models.CharField('Country', max_length=50)
+    city = models.CharField('City', max_length=50)
+    friends_count = models.IntegerField('Friends count')
+    followers_count = models.IntegerField('Followers count')
+    groups = models.TextField('Groups')
+    posts = models.TextField('Posts')
+    comments = models.TextField('Comments')
+    comments_of_other_users = models.TextField('Comments of other users')
+    alcohol = models.CharField('Alcohol', max_length=50)
+    life_main = models.CharField('Life Main', max_length=50)
+    people_main = models.CharField('People Main', max_length=50)
+    political = models.CharField('Political', max_length=50)
+    religion = models.CharField('Religion', max_length=50)
+    smoking = models.CharField('Smoking', max_length=50)
+    photos_count = models.IntegerField('Photos count')
+    posts_count = models.IntegerField('Posts count')
+
+    class Meta:
+        verbose_name = 'ProfileInfo'
+        verbose_name_plural = 'ProfileInfos'
+
+class GroupInfo(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    connected_search = models.ForeignKey(Search, null=True, blank=True, on_delete=models.SET_NULL)
+    posts = models.TextField('Posts')
+    description = models.TextField('Description')
+    
+    class Meta:
+        verbose_name = 'GroupInfo'
+        verbose_name_plural = 'GroupInfos'

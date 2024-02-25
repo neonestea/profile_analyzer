@@ -15,6 +15,7 @@
             </a>
             {% endfor %}
         <a href="" class="new_search_btn">Results</a>
+        <a href="{% url 'profile_info' search.id %}" class="new_search_btn">See Info</a>
         <a href="{% url 'search_update' search.id %}" class="new_search_btn">Rename</a>
         <a href="{% url 'search_delete' search.id %}" class="delete_btn">Delete</a>
         <a href="{% url 'search_home' %}" class="cancel_btn">Cancel</a>

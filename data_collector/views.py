@@ -1,16 +1,24 @@
 from django.shortcuts import render, redirect
-from .models import Search
+from .models import Search, ProfileInfo
 from .forms import SearchForm, SearchFormUpdate
 from datetime import datetime
 from django.views.generic import DeleteView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 import requests
+from .vk_api_processor import check_user, start_collecting_info, check_group
 
 @login_required
 def search_home(request):
     searches = Search.objects.filter(created_by = request.user).order_by('-date')[:5]
     #searches = Search.objects.order_by('-date')[:5]
     return render(request, 'data_collector/search_index.html', {'searches' : searches})
+
+@login_required
+def profile_info(request, pk):
+    search = Search.objects.get(id=pk)
+    info = ProfileInfo.objects.filter(connected_search = search)
+    return render(request, 'data_collector/info_view.html', {'info' : info, 'search' : search})
+
 
 class SearchDetailView(DeleteView):
     model = Search
@@ -41,9 +49,12 @@ def validate_links(request):
             invalid.append(link)
         if not link.startswith('https://vk.com/'):
             invalid.append(link)
+        
         else:
             response = requests.get(link)
             if response.status_code != 200:
+                invalid.append(link)
+            elif check_user(link) is None and check_group(link) is None:
                 invalid.append(link)
         processed.append(link)
     return invalid
@@ -54,18 +65,19 @@ def create_search(request):
     form = SearchForm()
     if request.method == 'POST':
         invalid = validate_links(request)
-        if validate_name(request):
-            error += 'Such name already exists\n'
-            form = SearchForm(data = request.POST.copy())
-        elif invalid:
+        #if validate_name(request):
+            #error += 'Such name already exists\n'
+        #    form = SearchForm(data = request.POST.copy())
+        if invalid:
             for link in invalid:
-                error += 'Check link: ' + link + '\n'
+                error += 'Only links to groups or users allowed. Check: ' + link + '\n'
             form = SearchForm(data = request.POST.copy())
         else:
             form = SearchForm(data = request.POST, created_by = request.user)
             #form.user_id = user.id
             if form.is_valid():
-                form.save()
+                model_instance = form.save()
+                start_collecting_info(model_instance, form.cleaned_data['link'])
                 return redirect('search_home')
             else:
                 error = 'Invalid request parameters'
