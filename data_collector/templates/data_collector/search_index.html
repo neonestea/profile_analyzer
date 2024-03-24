@@ -2,22 +2,26 @@
 {% block title %}Search profile{% endblock %}    
 
 {% block content %}
-    <div class="features">
-        <h1>Search profile</h1>
-        <a href="{% url 'create_search' %}"><button class="new_search_btn">Create search</button></a>
-        <h2 class="sub_header">Searches history</h2>
-        <div class="searches_history">
+<div class="my_page">
+        <h1>Searches</h1>
+        <a href="{% url 'create_search' %}" class="submit_link">New</a>
+        <div class="searches">
             
             {% if searches %}
                 {% for el in searches %}
-                <a href="{% url 'search_detail' el.id %}" class="internal_link">
-                    <div class="search_element">
-                        <h3>{{ el }} ({{ el.date }})</h3>
+                <a href="{% url 'search_detail' el.id %}" >
+                    <div class="one_search" >
+                        <h3>{{ el }}</h3>
+                        {% if el.ready == 1 %}
+                            <p style="color:green">Ready</p>
+                        {% else %}
+                            <p style="color:grey">Processing</p>
+                        {% endif %}
                     </div>
                 </a>
                 {% endfor %}
             {% else %}
-                <p class="custom_alert">You have no searches. Try to create <a href="{% url 'create_search' %}" class="internal_link">new search</a>.</p>
+                <p >You have no searches. Try to create <a href="{% url 'create_search' %}" >new search</a>.</p>
             {% endif %}
         </div>
     </div>

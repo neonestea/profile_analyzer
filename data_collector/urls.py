@@ -7,5 +7,6 @@ urlpatterns = [
     path('<uuid:pk>', views.SearchDetailView.as_view(), name='search_detail'),
     path('<uuid:pk>/delete', views.SearchDeleteView.as_view(), name='search_delete'),
     path('<uuid:pk>/update', views.update_search, name='search_update'),
-    path('<uuid:pk>/info', views.profile_info, name='profile_info')
+    path('<uuid:pk>/info', views.profile_info, name='profile_info'),
+    path('<uuid:pk>/result', views.result, name='result')
 ]

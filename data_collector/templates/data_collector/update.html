@@ -3,15 +3,15 @@
 {% block title %}Rename search{% endblock %}    
 
 {% block content %}
-    <div class="features">
+    <div class="my_page" >
         <h1>Rename search</h1>
         <form method="post">
             {% csrf_token %}
             {{ form.name }}<br>
             <div>
-                <span class="custom_error">{{ error }}</span>
+                <span >{{ error }}</span>
                 <div>
-                    <button class="new_search_btn" type="submit">Save</button>
+                    <button type="submit" class="submit_btn">Save</button>
                     <a href="{% url 'search_home' %}" class="cancel_btn">Cancel</a>
                 </div>
             </div>

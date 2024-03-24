@@ -3,16 +3,17 @@
 {% block title %}New search{% endblock %}    
 
 {% block content %}
-    <div class="features">
+    <div class="my_page">
         <h1>New search</h1>
         <form method="post">
             {% csrf_token %}
-            Name: {{ form.name }}<br>
-            Link(s) to users{{ form.link }}<br>
+            Name:<br> {{ form.name }}<br>
+            Link(s) to users<br>
+            {{ form.link }}<br>
             <div>
-                <span class="custom_error">{{ error }}</span>
+                <span class="error">{{ error }}</span>
                 <div>
-                    <button class="new_search_btn" type="submit">Search</button>
+                    <button type="submit" class="submit_btn">Search</button>
                     <a href="{% url 'search_home' %}" class="cancel_btn">Cancel</a>
                 </div>
             </div>

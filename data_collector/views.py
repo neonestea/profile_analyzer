@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect
-from .models import Search, ProfileInfo
+from .models import Search, ProfileInfo, Result
 from .forms import SearchForm, SearchFormUpdate
 from datetime import datetime
 from django.views.generic import DeleteView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 import requests
 from .vk_api_processor import check_user, start_collecting_info, check_group
+from threading import Thread
 
 @login_required
 def search_home(request):
-    searches = Search.objects.filter(created_by = request.user).order_by('-date')[:5]
+    searches = Search.objects.filter(created_by = request.user).order_by('-date')
     #searches = Search.objects.order_by('-date')[:5]
     return render(request, 'data_collector/search_index.html', {'searches' : searches})
 
@@ -18,6 +19,13 @@ def profile_info(request, pk):
     search = Search.objects.get(id=pk)
     info = ProfileInfo.objects.filter(connected_search = search)
     return render(request, 'data_collector/info_view.html', {'info' : info, 'search' : search})
+
+
+@login_required
+def result(request, pk):
+    search = Search.objects.get(id=pk)
+    info = Result.objects.filter(connected_search = search)
+    return render(request, 'data_collector/results_view.html', {'info' : info, 'search' : search})
 
 
 class SearchDetailView(DeleteView):
@@ -77,8 +85,12 @@ def create_search(request):
             #form.user_id = user.id
             if form.is_valid():
                 model_instance = form.save()
-                start_collecting_info(model_instance, form.cleaned_data['link'])
+                th = Thread(target=start_collecting_info, args=(model_instance, form.cleaned_data['link'],))
+                th.start()
+                #start_collecting_info(model_instance, form.cleaned_data['link'])
                 return redirect('search_home')
+                
+                #return redirect('search_home')
             else:
                 error = 'Invalid request parameters'
     

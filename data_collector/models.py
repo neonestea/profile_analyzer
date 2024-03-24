@@ -36,7 +36,7 @@ class ProfileInfo(models.Model):
     link = models.CharField('Link', max_length=50)
     first_name = models.CharField('First Name', max_length=50)
     last_name = models.CharField('Last Name', max_length=50)
-    bdate = models.DateTimeField('Birth Date')
+    bdate = models.IntegerField('Birth Date')
     interests = models.TextField('Interests')
     books = models.TextField('Books')
     tv = models.TextField('TV')
@@ -60,7 +60,8 @@ class ProfileInfo(models.Model):
     city = models.CharField('City', max_length=50)
     friends_count = models.IntegerField('Friends count')
     followers_count = models.IntegerField('Followers count')
-    groups = models.TextField('Groups')
+    groups = models.IntegerField('Groups count')
+    group_infos = models.TextField('Groups')
     posts = models.TextField('Posts')
     comments = models.TextField('Comments')
     comments_of_other_users = models.TextField('Comments of other users')
@@ -86,3 +87,18 @@ class GroupInfo(models.Model):
     class Meta:
         verbose_name = 'GroupInfo'
         verbose_name_plural = 'GroupInfos'
+
+class Result(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    connected_search = models.ForeignKey(Search, null=True, blank=True, on_delete=models.SET_NULL)
+    first_name = models.CharField('First Name', max_length=50)
+    last_name = models.CharField('Last Name', max_length=50)
+    age = models.CharField('Age(s)', max_length=20)
+    city = models.TextField('City(s)')
+    country = models.TextField('Country(s)')
+    open = models.CharField('openness', max_length=20)
+    cons = models.CharField('cons', max_length=20)
+    neur = models.CharField('neur', max_length=20)
+    agree = models.CharField('agree', max_length=20)
+    extr = models.CharField('extr', max_length=20)
+    interests = models.TextField('Interests')
